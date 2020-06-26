@@ -19,7 +19,7 @@ npm start
 The user will then be prompted with a list of choices.  Depending on the choice, the user will be prompted with a series of questions asking what they would like to do.  After answering all of the questions, the application will respond by updating the employee database.
 
 ## Technologies
-This application uses the following: Node.js, Inquirer, mySQL, mySQL Workbench, and ESLint.
+This application uses the following: Node.js, Inquirer, mySQL, and mySQL Workbench.
 
 ## USAGE
 ```
@@ -31,13 +31,13 @@ So that I can organize and plan my business
 ## DEMO
 
 #### Add and View Departments
-![add and view departments](./assets/add_department.gif)  
+![add and view departments](assets/add_department.gif)  
 
 #### Add and View Roles
-![add and view roles](./assets/add_role.gif)  
+![add and view roles](assets/add_role.gif)  
 
 #### Add and View Employees
-![add andn view employees](./assets/add_employee.gif)  
+![add andn view employees](assets/add_employee.gif)  
 
 #### Update Employee
-![update employee](./assets/update_role.gif) 
+![update employee](assets/update_role.gif) 
