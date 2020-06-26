@@ -19,7 +19,7 @@ npm start
 The user will then be prompted with a list of choices.  Depending on the choice, the user will be prompted with a series of questions asking what they would like to do.  After answering all of the questions, the application will respond by updating the employee database.
 
 ## Technologies
-This application uses the following: Node.js, Inquirer, mySQL, mySQL Workbench, and ESLint.
+This application uses the following: Node.js, Inquirer, mySQL, and mySQL Workbench.
 
 ## USAGE
 ```
