@@ -29,7 +29,7 @@ function start() {
                 "View roles",
                 "View employees",
                 "Update employee roles",
-                "exit"
+                "Exit"
             ]
         })
         .then(function (answer) {
@@ -59,7 +59,7 @@ function start() {
                     break;
 
                 case "Update employee roles":
-                    viewEmployee();
+                    UpdateEmployeeRole();
                     break;
 
                 case 'Exit':
@@ -84,7 +84,7 @@ function addDepartment() {
             var query = "INSERT INTO department SET ?";
             connection.query(query, { name: res.name }, (err, res) => {
                 if (err) throw err;
-                console.log("Department successfully added!");
+                console.log(res);
                 // return to main menu
                 start();
             })
@@ -96,18 +96,18 @@ function addRole() {
         .prompt([{
             name: "title",
             type: "input",
-            message: "Ener the employee title"
+            message: "Enter the employee title"
         },
-            {
-                name: "salary",
-                type: "input",
-                message: "Ener the employee salary"
-            },
-            {
-                name: "department_id",
-                type: "input",
-                message: "Ener the employee Department ID"
-            }])
+        {
+            name: "salary",
+            type: "input",
+            message: "Enter the employee salary"
+        },
+        {
+            name: "department_id",
+            type: "input",
+            message: "Enter the employee Department ID"
+        }])
         .then(res => {
             var query = "INSERT INTO role SET ?";
             // query to add role into database
@@ -117,7 +117,7 @@ function addRole() {
                 department_id: res.department_id
             }, (err, res) => {
                 if (err) throw err;
-                console.log("Role successfully added!");
+                console.log(res);
                 // return to main menu
                 start();
             })
@@ -131,41 +131,36 @@ function addEmployee() {
             type: "input",
             message: "Enter empoyee's first name"
         },
-            {
-                name: "employeeLast",
-                type: "input",
-                message: "Enter employee's last name"
-            },
-            {
-                type: "input",
-                message: "Enter employee role_id",
-                name: "role_id"
-            },
-            {
-                type: "input",
-                message: "Enter employee manager_id",
-                name: "manager_id"
-            }])
-            .then(response => {
-                if (response.first_name === '' || response.last_name === '' || response.role_id === '' || response.manager_id === '') {
-                    console.log("Please enter a valid response");
-                    start();
-                } else {
-                    var query = "INSERT INTO employee SET ?";
-                    // query to add employee into database
-                    connection.query(query, {
-                        first_name: response.first_name,
-                        last_name: response.last_name,
-                        role_id: response.role_id
-                    }, (err, res) => {
-                        if (err) throw err;
-                        console.log("Employee successfully added!");
-                    });
-                    // return to main menu
-                    start();
-                };
-});
-    
+        {
+            name: "employeeLast",
+            type: "input",
+            message: "Enter employee's last name"
+        },
+        {
+            type: "input",
+            message: "Enter employee role_id",
+            name: "role_id"
+        },
+        {
+            type: "input",
+            message: "Enter employee manager_id",
+            name: "manager_id"
+        }])
+        .then(response => {
+                var query = "INSERT INTO employee SET ?";
+                // query to add employee into database
+                connection.query(query, {
+                    first_name: response.first_name,
+                    last_name: response.last_name,
+                    role_id: response.role_id
+                }, (err, res) => {
+                    if (err) throw err;
+                    console.log(res);
+                });
+                // return to main menu
+                start();
+        });
+
 }
 
 function viewDepartment() {
@@ -203,4 +198,54 @@ function viewEmployee() {
         console.table(res);
     })
     start();
+}
+
+// Update employee role function
+function UpdateEmployeeRole() {
+    query = 'SELECT * FROM role;';
+    connection.query(query, (err, results) => {
+        if (err) throw err;
+        const rolesArr = results.map((role) => {
+            // for each role in results, create an object with title and roleid
+            return {
+                value: role.id,
+                name: role.title,
+            };
+        });
+
+        // showing all the employees from the database and saving to a variable
+        query = 'SELECT * FROM employee;';
+        connection.query(query, (err, res) => {
+            if (err) throw err;
+            const employeesArr = res.map((emp) => {
+                return {
+                    value: emp.id,
+                    name: `${emp.first_name} ${emp.last_name}`,
+                };
+            });
+
+            // then prompt user
+            inquirer.prompt([
+                {
+                    type: 'rawlist',
+                    name: 'employeeUpdate',
+                    choices: employeesArr,
+                    message: 'Which employee do you want to update?',
+                },
+                {
+                    type: 'rawlist',
+                    name: 'newEmpRole',
+                    choices: rolesArr,
+                    message: 'What is their new role?',
+                },
+            ]).then(response => {
+                query = `UPDATE employee SET role_id = '${response.newEmpRole}' WHERE id = '${response.employeeUpdate}';`;
+                connection.query(query, (err, results) => {
+                    if (err) throw err;
+                    // console.log(results);
+                    start();
+                });
+            });
+        });
+    });
 }
