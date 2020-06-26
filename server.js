@@ -75,16 +75,16 @@ function start() {
 function addDepartment() {
     inquirer
         .prompt({
-            name: "department",
+            name: "name",
             type: "input",
             message: "What department would you like to add?"
         })
         .then(res => {
             // query to add department into database
             var query = "INSERT INTO department SET ?";
-            connection.query(query, { name: res.name }, (err, res) => {
+            connection.query(query, {name: res.name}, (err, res) => {
                 if (err) throw err;
-                console.log(res);
+                // console.log("Department successfully add!", res);
                 // return to main menu
                 start();
             })
@@ -117,7 +117,7 @@ function addRole() {
                 department_id: res.department_id
             }, (err, res) => {
                 if (err) throw err;
-                console.log(res);
+                // console.log("Role successfully added!", res);
                 // return to main menu
                 start();
             })
@@ -127,12 +127,12 @@ function addRole() {
 function addEmployee() {
     inquirer
         .prompt([{
-            name: "employeeFirst",
+            name: "first_name",
             type: "input",
             message: "Enter empoyee's first name"
         },
         {
-            name: "employeeLast",
+            name: "last_name",
             type: "input",
             message: "Enter employee's last name"
         },
@@ -146,16 +146,16 @@ function addEmployee() {
             message: "Enter employee manager_id",
             name: "manager_id"
         }])
-        .then(response => {
+        .then(res => {
                 var query = "INSERT INTO employee SET ?";
                 // query to add employee into database
                 connection.query(query, {
-                    first_name: response.first_name,
-                    last_name: response.last_name,
-                    role_id: response.role_id
+                    first_name: res.first_name,
+                    last_name: res.last_name,
+                    role_id: res.role_id
                 }, (err, res) => {
                     if (err) throw err;
-                    console.log(res);
+                    // console.log("Employee successfully added!", res);
                 });
                 // return to main menu
                 start();
@@ -165,9 +165,7 @@ function addEmployee() {
 
 function viewDepartment() {
     // query to view departments in console
-    var query = `SELECT first_name, last_name, department.name 
-                FROM ((employee INNER JOIN role ON role_id = role.id) 
-                INNER JOIN department ON department_id = department.id)`;
+    var query = `SELECT * FROM department;`;
     connection.query(query, function (err, res) {
         if (err) throw err;
         console.log("\n View Departments \n");
@@ -177,9 +175,7 @@ function viewDepartment() {
 }
 function viewRole() {
     // query to view roles in console
-    var query = `SELECT first_name, last_name, role.title 
-                FROM ((employee INNER JOIN role ON role_id = role.id) 
-                INNER JOIN department ON department_id = department.id)`;
+    var query = `SELECT * FROM role;`;
     connection.query(query, function (err, res) {
         if (err) throw err;
         console.log("\n View Roles \n");
