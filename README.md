@@ -31,13 +31,13 @@ So that I can organize and plan my business
 ## DEMO
 
 #### Add and View Departments
-![add and view departments](assets/add_department.gif)  
+![add and view departments](/assets/add_department.gif)  
 
 #### Add and View Roles
-![add and view roles](assets/add_role.gif)  
+![add and view roles](/assets/add_role.gif)  
 
 #### Add and View Employees
-![add andn view employees](assets/add_employee.gif)  
+![add andn view employees](/assets/add_employee.gif)  
 
 #### Update Employee
-![update employee](assets/update_role.gif) 
+![update employee](/assets/update_role.gif) 
